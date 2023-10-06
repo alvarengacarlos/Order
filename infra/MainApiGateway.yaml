@@ -1,0 +1,77 @@
+---
+AWSTemplateFormatVersion: "2010-09-09"
+
+Description: "This creates Rest Api Gateway to works like a entrypoint of the application"
+
+Parameters:
+  ProxyFunctionArn:
+    Type: String
+    Default: ""
+
+Resources:
+  MainApiGateway:
+    Type: AWS::ApiGateway::RestApi
+    Properties:
+      ApiKeySourceType: HEADER
+      Name: "wiyo-main-api-gateway"
+
+  ProxyResource:
+    Type: AWS::ApiGateway::Resource
+    Properties:
+      RestApiId: !GetAtt MainApiGateway.RestApiId      
+      ParentId: !GetAtt MainApiGateway.RootResourceId
+      PathPart: "{proxy+}"
+
+  AnyMethodForProxyResource:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      ApiKeyRequired: True
+      AuthorizationType: NONE
+      HttpMethod: "ANY"
+      Integration:
+        Type: AWS_PROXY
+        IntegrationHttpMethod: "POST"
+        Uri: !Join
+          - ""
+          - - "arn:aws:apigateway:"
+            - !Ref "AWS::Region"
+            - ":lambda:path/2015-03-31/functions/"            
+            - !Ref ProxyFunctionArn                
+            - "/invocations"
+      ResourceId: !GetAtt ProxyResource.ResourceId
+      RestApiId: !GetAtt MainApiGateway.RestApiId
+
+  ApiKey:
+    Type: AWS::ApiGateway::ApiKey
+    Properties:
+      Enabled: True
+      Name: "wiyo-api-key"
+
+  Deployment:
+    Type: AWS::ApiGateway::Deployment
+    DependsOn:
+      - AnyMethodForProxyResource
+    Properties:
+      RestApiId: !GetAtt MainApiGateway.RestApiId
+      StageName: "production"
+  
+  UsagePlan:
+    Type: AWS::ApiGateway::UsagePlan
+    DependsOn:
+      - Deployment
+    Properties:
+      ApiStages:
+        - ApiId: !GetAtt MainApiGateway.RestApiId
+          Stage: "production"
+      UsagePlanName: "wiyo-usage-plan"
+  
+  UsagePlanKey:
+    Type: AWS::ApiGateway::UsagePlanKey
+    Properties:
+      KeyId: !GetAtt ApiKey.APIKeyId
+      KeyType: API_KEY
+      UsagePlanId: !GetAtt UsagePlan.Id
+
+Outputs:
+  MainApiGatewayId:
+    Value: !GetAtt MainApiGateway.RestApiId

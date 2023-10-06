@@ -1,0 +1,100 @@
+---
+AWSTemplateFormatVersion: "2010-09-09"
+
+Description: "This is a root template"
+
+Parameters:
+  StackBucketName:
+    Type: String
+    Default: ""
+
+Resources:
+  ProductImagesBucket:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: !Join
+        - ""
+        - - "https://"
+          - !Ref StackBucketName 
+          - ".s3.amazonaws.com/ProductImagesBucket.yaml"
+  
+  HamburgersTable:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: !Join
+        - ""
+        - - "https://"
+          - !Ref StackBucketName
+          - ".s3.amazonaws.com/HamburgersTable.yaml"
+  
+  BeveragesTable:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: !Join
+        - ""
+        - - "https://"
+          - !Ref StackBucketName
+          - ".s3.amazonaws.com/BeveragesTable.yaml"
+  
+  DessertsTable:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: !Join
+        - ""
+        - - "https://"
+          - !Ref StackBucketName
+          - ".s3.amazonaws.com/DessertsTable.yaml"
+
+  NotificationQueue:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: !Join
+        - ""
+        - - "https://"
+          - !Ref StackBucketName
+          - ".s3.amazonaws.com/NotificationQueue.yaml"
+  
+  SMSNotificationFunction:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      Parameters:
+        StackBucketName: !Ref StackBucketName
+      TemplateURL: !Join
+        - ""
+        - - "https://"
+          - !Ref StackBucketName
+          - ".s3.amazonaws.com/SMSNotificationFunction.yaml"
+
+  ProxyFunction:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      Parameters:
+        StackBucketName: !Ref StackBucketName
+      TemplateURL: !Join
+        - ""
+        - - "https://"
+          - !Ref StackBucketName
+          - ".s3.amazonaws.com/ProxyFunction.yaml"
+
+  MainApiGateway:
+    Type: AWS::CloudFormation::Stack
+    Properties:     
+      Parameters:
+        ProxyFunctionArn: !GetAtt ProxyFunction.Outputs.ProxyFunctionArn 
+      TemplateURL: !Join
+        - ""
+        - - "https://"
+          - !Ref StackBucketName
+          - ".s3.amazonaws.com/MainApiGateway.yaml"
+
+  ProxyFunctionPermission:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      Parameters:
+        ProxyFunctionArn: !GetAtt ProxyFunction.Outputs.ProxyFunctionArn
+        MainApiGatewayId: !GetAtt MainApiGateway.Outputs.MainApiGatewayId
+      TemplateURL: !Join
+        - ""
+        - - "https://"
+          - !Ref StackBucketName
+          - ".s3.amazonaws.com/ProxyFunctionPermission.yaml"

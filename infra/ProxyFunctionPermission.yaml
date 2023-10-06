@@ -1,0 +1,22 @@
+---
+AWSTemplateFormatVersion: "2010-09-09"
+
+Description: "This creates a permission to MainApiGateway call ProxyFunction"
+
+Parameters:
+  ProxyFunctionArn:
+    Type: String
+    Default: ""
+  MainApiGatewayId:
+    Type: String
+    Default: ""
+
+Resources:
+  ProxyFunctionPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName: !Ref ProxyFunctionArn
+      Principal: "apigateway.amazonaws.com"
+      SourceAccount: !Ref "AWS::AccountId"
+      SourceArn: !Sub "arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${MainApiGatewayId}/*/*/*"

@@ -1,0 +1,14 @@
+---
+AWSTemplateFormatVersion: "2010-09-09"
+
+Description: "This creates a sqs queue to decuple notification services"
+
+Resources:
+  NotificationQueue:
+    Type: AWS::SQS::Queue
+    Properties:
+      # One day of retention
+      MessageRetentionPeriod: 86400
+      QueueName: "wiyo-notification"
+      ReceiveMessageWaitTimeSeconds: 20
+

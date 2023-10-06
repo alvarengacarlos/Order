@@ -1,0 +1,10 @@
+---
+AWSTemplateFormatVersion: "2010-09-09"
+
+Description: "This creates a private bucket to store product images"
+
+Resources:
+  ProductImagesBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: "wiyo-product-images"
