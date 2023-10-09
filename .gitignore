@@ -1,2 +1,5 @@
 proxy-function.zip
 sms-notification-function.zip
+.idea
+node_modules
+coverage
