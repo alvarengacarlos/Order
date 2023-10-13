@@ -1,10 +1,10 @@
 ---
 AWSTemplateFormatVersion: "2010-09-09"
 
-Description: "This creates DynamoDB table to store desserts"
+Description: "This creates DynamoDB table to store products"
 
 Resources:
-  DessertsTable:
+  ProductsTable:
     Type: AWS::DynamoDB::Table
     Properties:
       AttributeDefinitions:
@@ -16,4 +16,4 @@ Resources:
         -
           AttributeName: "id"
           KeyType: "HASH"
-      TableName: "wiyo-desserts"
+      TableName: "wiyo-products"

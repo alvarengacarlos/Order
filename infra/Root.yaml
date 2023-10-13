@@ -18,32 +18,14 @@ Resources:
           - !Ref StackBucketName 
           - ".s3.amazonaws.com/ProductImagesBucket.yaml"
   
-  HamburgersTable:
+  ProductsTable:
     Type: AWS::CloudFormation::Stack
     Properties:
       TemplateURL: !Join
         - ""
         - - "https://"
           - !Ref StackBucketName
-          - ".s3.amazonaws.com/HamburgersTable.yaml"
-  
-  BeveragesTable:
-    Type: AWS::CloudFormation::Stack
-    Properties:
-      TemplateURL: !Join
-        - ""
-        - - "https://"
-          - !Ref StackBucketName
-          - ".s3.amazonaws.com/BeveragesTable.yaml"
-  
-  DessertsTable:
-    Type: AWS::CloudFormation::Stack
-    Properties:
-      TemplateURL: !Join
-        - ""
-        - - "https://"
-          - !Ref StackBucketName
-          - ".s3.amazonaws.com/DessertsTable.yaml"
+          - ".s3.amazonaws.com/ProductsTable.yaml"
 
   NotificationQueue:
     Type: AWS::CloudFormation::Stack
