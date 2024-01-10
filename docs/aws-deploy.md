@@ -1,5 +1,7 @@
 # Implantação na AWS
 
+![](aws-diagram.jpg)
+
 ## Requisitos
 - AWS CLI
 - ZIP
