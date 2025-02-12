@@ -1,10 +1,9 @@
-# What Is You Order
-
+# Order
 ## Descrição
+Order é uma aplicação desenvolvida com o propósito de gerenciar pedidos via entrega.
 
 ## Documentação
-- [Implantação](./docs/aws-deploy.md)
-- A diagramação foi feita utilizando a ferramenta `Draw.io` e pode ser encontrada no seguinte caminho: `docs/wiyo-diagrams.drawio`.
+...
 
 ## Licença
-Veja em [license](./LICENSE)
+Veja em [license](./LICENSE).
