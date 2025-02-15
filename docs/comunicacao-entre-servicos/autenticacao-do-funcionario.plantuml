@@ -1,0 +1,13 @@
+@startuml
+' Definições
+actor Funcionario
+rectangle "Api Gateway" as ApiGateway
+rectangle "Serviço de Conta" as ContaServico
+rectangle "Serviço de Inquilino" as InquilinoServico
+
+' Relação
+Funcionario --> ApiGateway : Autenticação do funcionário
+ApiGateway --> ContaServico
+ContaServico --> InquilinoServico : Inquilino está bloqueado?
+InquilinoServico --> ContaServico
+@enduml

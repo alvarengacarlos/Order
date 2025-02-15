@@ -1,0 +1,8 @@
+@startuml
+rectangle "Serviço de Produto"
+rectangle "Serviço de Notificação"
+rectangle "Serviço de Pedido"
+rectangle "Serviço de Conta"
+rectangle "Serviço de Inquilino"
+rectangle "Serviço de Autorização"
+@enduml

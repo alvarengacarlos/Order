@@ -1,0 +1,13 @@
+@startuml
+' Definições
+actor Consumidor
+rectangle "Api Gateway" as ApiGateway
+rectangle "Serviço de Produto" as ProdutoServico
+rectangle "Serviço de Indexação Vetorial" as IndexacaoVetorialServico
+
+' Relação
+Consumidor --> ApiGateway : Pesquisar produto
+ApiGateway --> ProdutoServico
+ProdutoServico --> IndexacaoVetorialServico : Busca produtos relevantes
+IndexacaoVetorialServico --> ProdutoServico
+@enduml

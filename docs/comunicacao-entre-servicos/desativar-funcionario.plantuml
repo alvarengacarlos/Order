@@ -1,0 +1,10 @@
+@startuml
+' Definições
+actor Chefe
+rectangle "Api Gateway" as ApiGateway
+rectangle "Serviço de Conta" as ContaServico
+
+' Relação
+Chefe --> ApiGateway : Desativar funcionario
+ApiGateway --> ContaServico
+@enduml

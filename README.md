@@ -1,9 +1,9 @@
 # Order
 ## Descrição
-Order é uma aplicação desenvolvida com o propósito de gerenciar pedidos via entrega.
+Order é uma plataforma para gerenciar pedidos de restaurantes.
 
 ## Documentação
-...
+- [Especificação de requisitos do sistema](./docs/especificacao-de-requisitos-de-sistema.md)
 
 ## Licença
 Veja em [license](./LICENSE).

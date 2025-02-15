@@ -1,0 +1,10 @@
+@startuml
+' Definições
+actor Consumidor
+rectangle "Api Gateway" as ApiGateway
+rectangle "Serviço de Pedido" as PedidoServico
+
+' Relação
+Consumidor --> ApiGateway : Remover produto do carrinho
+ApiGateway --> PedidoServico
+@enduml

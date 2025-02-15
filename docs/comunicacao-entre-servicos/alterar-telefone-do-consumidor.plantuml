@@ -1,0 +1,13 @@
+@startuml
+' Definições
+actor Consumidor
+rectangle "Api Gateway" as ApiGateway
+rectangle "Serviço de Conta" as ContaServico
+rectangle "Serviço de Notificação" as NotificacaoServico
+
+' Relação
+Consumidor --> ApiGateway : Alterar telefone do consumidor
+ApiGateway --> ContaServico
+ContaServico --> NotificacaoServico : Solicita envio de mensagem
+NotificacaoServico --> Consumidor : Envia mensagem
+@enduml

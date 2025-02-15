@@ -1,0 +1,10 @@
+@startuml
+' Definições
+actor Funcionario
+rectangle "Api Gateway" as ApiGateway
+rectangle "Serviço de Conta" as ContaServico
+
+' Relação
+Funcionario --> ApiGateway : Alterar senha do funcionário
+ApiGateway --> ContaServico
+@enduml
