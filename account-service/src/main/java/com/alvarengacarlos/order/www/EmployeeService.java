@@ -5,6 +5,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.HexFormat;
+import java.util.UUID;
 
 public class EmployeeService {
 
@@ -49,5 +50,9 @@ public class EmployeeService {
         } catch (NoSuchAlgorithmException | DigestException exception) {
             throw new RuntimeException(exception.getMessage());
         }
+    }
+
+    public void destroyEmployee(UUID employeeId) {
+        employeeRepository.deleteEmployee(employeeId);
     }
 }

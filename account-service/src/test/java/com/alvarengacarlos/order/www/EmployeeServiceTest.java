@@ -39,4 +39,13 @@ class EmployeeServiceTest {
         Mockito.verify(employeeRepository, Mockito.times(1)).findEmployeeByUsername(createEmployeeDto.username());
         Mockito.verify(employeeRepository, Mockito.times(1)).saveEmployee(Mockito.any(SaveEmployeeDto.class));
     }
+
+    @Test
+    void shouldDestroyAEmployee() {
+        Employee employee = Mockito.mock();
+
+        Assertions.assertDoesNotThrow(() -> employeeService.destroyEmployee(employee.id()));
+        Mockito.verify(employeeRepository).deleteEmployee(employee.id());
+
+    }
 }
