@@ -59,4 +59,8 @@ public class EmployeeService {
     public void activateEmployee(UUID employeeId) {
         employeeRepository.updateIsActiveEmployeeAttribute(employeeId, true);
     }
+
+    public void deactivateEmployee(UUID employeeId) {
+        employeeRepository.updateIsActiveEmployeeAttribute(employeeId, false);
+    }
 }
