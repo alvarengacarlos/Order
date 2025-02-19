@@ -46,6 +46,13 @@ class EmployeeServiceTest {
 
         Assertions.assertDoesNotThrow(() -> employeeService.destroyEmployee(employee.id()));
         Mockito.verify(employeeRepository).deleteEmployee(employee.id());
+    }
 
+    @Test
+    void shouldActivateAEmployee() {
+        Employee employee = Mockito.mock();
+
+        Assertions.assertDoesNotThrow(() -> employeeService.activateEmployee(employee.id()));
+        Mockito.verify(employeeRepository).updateIsActiveEmployeeAttribute(employee.id(), true);
     }
 }

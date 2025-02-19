@@ -55,4 +55,8 @@ public class EmployeeService {
     public void destroyEmployee(UUID employeeId) {
         employeeRepository.deleteEmployee(employeeId);
     }
+
+    public void activateEmployee(UUID employeeId) {
+        employeeRepository.updateIsActiveEmployeeAttribute(employeeId, true);
+    }
 }

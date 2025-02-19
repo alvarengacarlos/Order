@@ -8,6 +8,7 @@ public record Employee(
         String username,
         String passwordHash,
         String salt,
-        Role role) {
+        Role role,
+        Boolean isActive) {
 
 }

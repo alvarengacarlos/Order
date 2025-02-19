@@ -9,4 +9,6 @@ public interface EmployeeRepository {
     Employee findEmployeeByUsername(String username);
 
     void deleteEmployee(UUID employeeId);
+
+    void updateIsActiveEmployeeAttribute(UUID employeeId, Boolean active);
 }
