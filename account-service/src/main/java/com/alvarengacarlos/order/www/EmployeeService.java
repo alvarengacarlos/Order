@@ -1,5 +1,7 @@
 package com.alvarengacarlos.order.www;
 
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.algorithms.Algorithm;
 import java.security.DigestException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -9,32 +11,35 @@ import java.util.HexFormat;
 import java.util.Map;
 import java.util.UUID;
 
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.algorithms.Algorithm;
-
 public class EmployeeService {
 
     private final EmployeeRepository employeeRepository;
     private final String jwtSecret;
 
-    public EmployeeService(EmployeeRepository employeeRepository, String jwtSecret) {
+    public EmployeeService(
+        EmployeeRepository employeeRepository,
+        String jwtSecret
+    ) {
         this.employeeRepository = employeeRepository;
         this.jwtSecret = jwtSecret;
     }
 
-    public void createEmployee(CreateEmployeeDto createEmployeeDto) throws EmployeeExistsException {
-        Employee employee = employeeRepository.findEmployeeByUsername(createEmployeeDto.username());
+    public void createEmployee(CreateEmployeeDto createEmployeeDto)
+        throws EmployeeExistsException {
+        Employee employee = employeeRepository.findEmployeeByUsername(
+            createEmployeeDto.username()
+        );
         if (employee != null) {
             throw new EmployeeExistsException();
         }
 
         String salt = generateSalt();
         SaveEmployeeDto saveEmployeeDto = new SaveEmployeeDto(
-                createEmployeeDto.name(),
-                createEmployeeDto.username(),
-                hashEmployeePassword(createEmployeeDto.password(), salt),
-                salt,
-                createEmployeeDto.role()
+            createEmployeeDto.name(),
+            createEmployeeDto.username(),
+            hashEmployeePassword(createEmployeeDto.password(), salt),
+            salt,
+            createEmployeeDto.employeeRole()
         );
         employeeRepository.saveEmployee(saveEmployeeDto);
     }
@@ -71,7 +76,8 @@ public class EmployeeService {
         employeeRepository.updateIsActiveEmployeeAttribute(employeeId, false);
     }
 
-    public String authenticateEmployee(String username, String password) throws AuthenticationFailureException {
+    public String authenticateEmployee(String username, String password)
+        throws AuthenticationFailureException {
         Employee employee = employeeRepository.findEmployeeByUsername(username);
 
         if (employee == null) {
@@ -82,7 +88,11 @@ public class EmployeeService {
             throw new AuthenticationFailureException();
         }
 
-        if (!employee.passwordHash().equals(hashEmployeePassword(password, employee.salt()))) {
+        if (
+            !employee
+                .passwordHash()
+                .equals(hashEmployeePassword(password, employee.salt()))
+        ) {
             throw new AuthenticationFailureException();
         }
 
@@ -91,14 +101,16 @@ public class EmployeeService {
 
     private String generateJwtToken(Employee employee) {
         Map<String, String> payload = Map.of(
-                "id", employee.id().toString(),
-                "role", employee.role().toString()
+            "id",
+            employee.id().toString(),
+            "role",
+            employee.employeeRole().toString()
         );
         Instant expiresAt = Instant.now().plusSeconds(60 * 60 * 24);
         Algorithm algorithm = Algorithm.HMAC256(jwtSecret);
         return JWT.create()
-                .withPayload(payload)
-                .withExpiresAt(expiresAt)
-                .sign(algorithm);
+            .withPayload(payload)
+            .withExpiresAt(expiresAt)
+            .sign(algorithm);
     }
 }

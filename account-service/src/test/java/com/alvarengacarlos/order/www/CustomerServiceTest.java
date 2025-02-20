@@ -24,9 +24,20 @@ public class CustomerServiceTest {
         void shouldPreRegisterACustomer() {
             String phoneNumber = "+55 (00)00000-0000";
 
-            Assertions.assertDoesNotThrow(() -> customerService.preRegisterCustomer(phoneNumber));
-            Mockito.verify(customerRepository, Mockito.times(1)).saveCustomerPreRegister(Mockito.eq(phoneNumber), Mockito.anyString());
-            Mockito.verify(customerRepository, Mockito.times(1)).sendSmsToCustomer(Mockito.eq(phoneNumber), Mockito.anyString());
+            Assertions.assertDoesNotThrow(() ->
+                customerService.preRegisterCustomer(phoneNumber)
+            );
+            Mockito.verify(
+                customerRepository,
+                Mockito.times(1)
+            ).saveCustomerPreRegister(
+                Mockito.eq(phoneNumber),
+                Mockito.anyString()
+            );
+            Mockito.verify(
+                customerRepository,
+                Mockito.times(1)
+            ).sendSmsToCustomer(Mockito.eq(phoneNumber), Mockito.anyString());
         }
     }
 
@@ -41,10 +52,23 @@ public class CustomerServiceTest {
                 String phoneNumber = "+55 (00)00000-0000";
                 String validationCode = "123456";
                 String name = "John Doe";
-                Mockito.when(customerRepository.findCustomerPreRegister(phoneNumber)).thenReturn(null);
+                Mockito.when(
+                    customerRepository.findCustomerPreRegister(phoneNumber)
+                ).thenReturn(null);
 
-                Assertions.assertThrows(InvalidValidationCodeException.class, () -> customerService.registerCustomer(phoneNumber, validationCode, name));
-                Mockito.verify(customerRepository, Mockito.times(1)).findCustomerPreRegister(phoneNumber);
+                Assertions.assertThrows(
+                    InvalidValidationCodeException.class,
+                    () ->
+                        customerService.registerCustomer(
+                            phoneNumber,
+                            validationCode,
+                            name
+                        )
+                );
+                Mockito.verify(
+                    customerRepository,
+                    Mockito.times(1)
+                ).findCustomerPreRegister(phoneNumber);
             }
 
             @Test
@@ -52,10 +76,23 @@ public class CustomerServiceTest {
                 String phoneNumber = "+55 (00)00000-0000";
                 String validationCode = "123456";
                 String name = "John Doe";
-                Mockito.when(customerRepository.findCustomerPreRegister(phoneNumber)).thenReturn("654321");
+                Mockito.when(
+                    customerRepository.findCustomerPreRegister(phoneNumber)
+                ).thenReturn("654321");
 
-                Assertions.assertThrows(InvalidValidationCodeException.class, () -> customerService.registerCustomer(phoneNumber, validationCode, name));
-                Mockito.verify(customerRepository, Mockito.times(1)).findCustomerPreRegister(phoneNumber);
+                Assertions.assertThrows(
+                    InvalidValidationCodeException.class,
+                    () ->
+                        customerService.registerCustomer(
+                            phoneNumber,
+                            validationCode,
+                            name
+                        )
+                );
+                Mockito.verify(
+                    customerRepository,
+                    Mockito.times(1)
+                ).findCustomerPreRegister(phoneNumber);
             }
         }
 
@@ -64,11 +101,25 @@ public class CustomerServiceTest {
             String phoneNumber = "+55 (00)00000-0000";
             String validationCode = "123456";
             String name = "John Doe";
-            Mockito.when(customerRepository.findCustomerPreRegister(phoneNumber)).thenReturn(validationCode);
+            Mockito.when(
+                customerRepository.findCustomerPreRegister(phoneNumber)
+            ).thenReturn(validationCode);
 
-            Assertions.assertDoesNotThrow(() -> customerService.registerCustomer(phoneNumber, validationCode, name));
-            Mockito.verify(customerRepository, Mockito.times(1)).findCustomerPreRegister(phoneNumber);
-            Mockito.verify(customerRepository, Mockito.times(1)).saveCustomerRegister(name, phoneNumber);
+            Assertions.assertDoesNotThrow(() ->
+                customerService.registerCustomer(
+                    phoneNumber,
+                    validationCode,
+                    name
+                )
+            );
+            Mockito.verify(
+                customerRepository,
+                Mockito.times(1)
+            ).findCustomerPreRegister(phoneNumber);
+            Mockito.verify(
+                customerRepository,
+                Mockito.times(1)
+            ).saveCustomerRegister(name, phoneNumber);
         }
     }
 }

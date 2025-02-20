@@ -25,8 +25,14 @@ public class CustomerService {
         return HexFormat.of().formatHex(buffer);
     }
 
-    public void registerCustomer(String phoneNumber, String validationCode, String name) throws InvalidValidationCodeException {
-        String preRegister = customerRepository.findCustomerPreRegister(phoneNumber);
+    public void registerCustomer(
+        String phoneNumber,
+        String validationCode,
+        String name
+    ) throws InvalidValidationCodeException {
+        String preRegister = customerRepository.findCustomerPreRegister(
+            phoneNumber
+        );
         if (preRegister == null || !preRegister.equals(validationCode)) {
             throw new InvalidValidationCodeException();
         }
