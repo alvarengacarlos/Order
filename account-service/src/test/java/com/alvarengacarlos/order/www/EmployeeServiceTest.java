@@ -41,7 +41,7 @@ class EmployeeServiceTest {
     }
 
     @Nested
-    class createEmployee {
+    class CreateEmployee {
 
         @Test
         void shouldThrowEmployeeExists() {
@@ -63,7 +63,7 @@ class EmployeeServiceTest {
     }
 
     @Nested
-    class destroyEmployee {
+    class DestroyEmployee {
 
         @Test
         void shouldDestroyAEmployee() {
@@ -73,7 +73,7 @@ class EmployeeServiceTest {
     }
 
     @Nested
-    class activateEmployee {
+    class ActivateEmployee {
 
         @Test
         void shouldActivateAEmployee() {
@@ -83,7 +83,7 @@ class EmployeeServiceTest {
     }
 
     @Nested
-    class deactivateEmployee {
+    class DeactivateEmployee {
 
         @Test
         void shouldDeactivateAEmployee() {
@@ -93,10 +93,10 @@ class EmployeeServiceTest {
     }
 
     @Nested
-    class authenticateEmployee {
+    class AuthenticateEmployee {
 
         @Nested
-        class shouldThrowAuthenticationFailureException {
+        class ShouldThrowAuthenticationFailureException {
 
             @Test
             void whenUsernameIsInvalid() {
