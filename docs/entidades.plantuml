@@ -58,28 +58,25 @@ package "ContaSubdominio" {
     class Consumidor
     Consumidor : nome
     Consumidor : telefone
-    Consumidor : Papel papel
     Consumidor : numeroDeTelefoneEstaValidado()
     Consumidor : cadastrarMe()
     Consumidor : validaNumeroDeTelefone()
     Consumidor : alterarNumeroTelefone()
     Consumidor : alterarNome()
 
+    class EnderecoDeEntrega
+    EnderecoDeEntrega : cidade
+    EnderecoDeEntrega : bairro
+    EnderecoDeEntrega : rua
+    EnderecoDeEntrega : numero
+    EnderecoDeEntrega : referencia
+
     enum Papel
     Papel : RAIZ
     Papel : CHEFE
     Papel : ATENDENTE
     Papel : COZINHEIRO
-    Papel : ENTREGADOR
-    Papel : CONSUMIDOR
-
-    class EnderecoConsumidor
-    EnderecoConsumidor : cidade
-    EnderecoConsumidor : bairro
-    EnderecoConsumidor : rua
-    EnderecoConsumidor : numero
-    EnderecoConsumidor : referencia
-
+    Papel : ENTREGADOR    
 }
 
 package "ProdutoSubdominio" {
@@ -92,6 +89,14 @@ package "ProdutoSubdominio" {
     Produto : editarProduto()
     Produto : listarProdutos()
     Produto : pesquisarProduto()
+}
+
+package "CarrinhoDeCompras" {
+    class Carrinho
+    Carrinho : Produto[] produtos
+    Carrinho : totalAPagar
+    Carrinho : adicionarProduto()
+    Carrinho : removerProduto()
 }
 
 package "PedidoSubdominio" {
@@ -127,11 +132,6 @@ package "PedidoSubdominio" {
     HistoricoDoEstadoDoPedido : EstadoDoPedido estado
     HistoricoDoEstadoDoPedido : criadoEm
 
-    class Carrinho
-    Carrinho : Produto[] produtos
-    Carrinho : totalAPagar
-    Carrinho : adicionarProduto()
-    Carrinho : removerProduto()
 }
 
 package "NotificacaoSubdominio" {
@@ -157,7 +157,7 @@ Restaurante *-- Consumidor
 Funcionario *-- Papel
 Consumidor *-- Pedido
 Consumidor *-- Carrinho
-Consumidor *-- EnderecoConsumidor
+Consumidor *-- EnderecoDeEntrega
 Consumidor *-- Papel
 Pedido *-- FormaDePagamentoConsumidor
 Pedido o-- Produto
