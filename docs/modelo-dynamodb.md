@@ -2,8 +2,8 @@
 
 | Partition Key       | Sort Key              | Attributes     |                      |                              |            |                                           |
 | ------------------- | --------------------- | -------------- | -------------------- | ---------------------------- | ---------- | ----------------------------------------- |
-|                     |                       | **nome**       | **usuario**          | **senha**                    | **papel**  |                                           |
-| Conta#1             | Funcionario           | Joao da Silva  | joao                 | $a324sth...                  | ATENDENTE  |                                           |
+|                     |                       | **nome**       | **usuario**          | **senha**                    | **salto**  | **papel**                                 |
+| Conta#1             | Funcionario           | Joao da Silva  | joao                 | $a324sth...                  | 123456     | ATENDENTE                                 |
 |                     |                       | **nome**       | **telefone**         |                              |            |                                           |
 | Conta#2             | Consumidor            | Maria Santos   | (00)00000-0000       |                              |            |                                           |
 |                     |                       | cidade         | bairro               | rua                          | numero     | referencia                                |
