@@ -3,7 +3,8 @@ package com.alvarengacarlos.order.www;
 import java.util.UUID;
 
 public interface EmployeeRepository {
-    void saveEmployee(SaveEmployeeDto saveEmployeeDto);
+
+    void saveEmployee(Employee employee);
 
     Employee findEmployeeByUsername(String username);
 
