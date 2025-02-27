@@ -10,11 +10,13 @@ public class CustomerServiceTest {
 
     private CustomerService customerService;
     private CustomerRepository customerRepository;
+    private CustomerPreRegisterRepository customerPreRegisterRepository;
 
     @BeforeEach
     void beforeEach() {
         customerRepository = Mockito.mock();
-        customerService = new CustomerService(customerRepository);
+        customerPreRegisterRepository = Mockito.mock();
+        customerService = new CustomerService(customerRepository, customerPreRegisterRepository);
     }
 
     @Nested
@@ -24,19 +26,18 @@ public class CustomerServiceTest {
         void shouldPreRegisterACustomer() {
             String phoneNumber = "+55 (00)00000-0000";
 
-            Assertions.assertDoesNotThrow(() ->
-                customerService.preRegisterCustomer(phoneNumber)
+            Assertions.assertDoesNotThrow(()
+                    -> customerService.preRegisterCustomer(phoneNumber)
             );
             Mockito.verify(
-                customerRepository,
-                Mockito.times(1)
+                    customerPreRegisterRepository,
+                    Mockito.times(1)
             ).saveCustomerPreRegister(
-                Mockito.eq(phoneNumber),
-                Mockito.anyString()
+                    Mockito.any(CustomerPreRegister.class)
             );
             Mockito.verify(
-                customerRepository,
-                Mockito.times(1)
+                    customerPreRegisterRepository,
+                    Mockito.times(1)
             ).sendSmsToCustomer(Mockito.eq(phoneNumber), Mockito.anyString());
         }
     }
@@ -53,21 +54,21 @@ public class CustomerServiceTest {
                 String validationCode = "123456";
                 String name = "John Doe";
                 Mockito.when(
-                    customerRepository.findCustomerPreRegister(phoneNumber)
+                        customerPreRegisterRepository.findCustomerPreRegister(phoneNumber)
                 ).thenReturn(null);
 
                 Assertions.assertThrows(
-                    InvalidValidationCodeException.class,
-                    () ->
-                        customerService.registerCustomer(
-                            phoneNumber,
-                            validationCode,
-                            name
+                        InvalidValidationCodeException.class,
+                        ()
+                        -> customerService.registerCustomer(
+                                phoneNumber,
+                                validationCode,
+                                name
                         )
                 );
                 Mockito.verify(
-                    customerRepository,
-                    Mockito.times(1)
+                        customerPreRegisterRepository,
+                        Mockito.times(1)
                 ).findCustomerPreRegister(phoneNumber);
             }
 
@@ -76,22 +77,23 @@ public class CustomerServiceTest {
                 String phoneNumber = "+55 (00)00000-0000";
                 String validationCode = "123456";
                 String name = "John Doe";
+                CustomerPreRegister customerPreRegister = CustomerPreRegister.newCustomerPreRegister(phoneNumber);
                 Mockito.when(
-                    customerRepository.findCustomerPreRegister(phoneNumber)
-                ).thenReturn("654321");
+                        customerPreRegisterRepository.findCustomerPreRegister(phoneNumber)
+                ).thenReturn(customerPreRegister);
 
                 Assertions.assertThrows(
-                    InvalidValidationCodeException.class,
-                    () ->
-                        customerService.registerCustomer(
-                            phoneNumber,
-                            validationCode,
-                            name
+                        InvalidValidationCodeException.class,
+                        ()
+                        -> customerService.registerCustomer(
+                                phoneNumber,
+                                validationCode,
+                                name
                         )
                 );
                 Mockito.verify(
-                    customerRepository,
-                    Mockito.times(1)
+                        customerPreRegisterRepository,
+                        Mockito.times(1)
                 ).findCustomerPreRegister(phoneNumber);
             }
         }
@@ -99,27 +101,27 @@ public class CustomerServiceTest {
         @Test
         void shouldRegisterACustomer() {
             String phoneNumber = "+55 (00)00000-0000";
-            String validationCode = "123456";
             String name = "John Doe";
+            CustomerPreRegister customerPreRegister = CustomerPreRegister.newCustomerPreRegister(phoneNumber);
             Mockito.when(
-                customerRepository.findCustomerPreRegister(phoneNumber)
-            ).thenReturn(validationCode);
+                    customerPreRegisterRepository.findCustomerPreRegister(phoneNumber)
+            ).thenReturn(customerPreRegister);
 
-            Assertions.assertDoesNotThrow(() ->
-                customerService.registerCustomer(
-                    phoneNumber,
-                    validationCode,
-                    name
-                )
+            Assertions.assertDoesNotThrow(()
+                    -> customerService.registerCustomer(
+                            phoneNumber,
+                            customerPreRegister.validationCode,
+                            name
+                    )
             );
             Mockito.verify(
-                customerRepository,
-                Mockito.times(1)
+                    customerPreRegisterRepository,
+                    Mockito.times(1)
             ).findCustomerPreRegister(phoneNumber);
             Mockito.verify(
-                customerRepository,
-                Mockito.times(1)
-            ).saveCustomerRegister(name, phoneNumber);
+                    customerRepository,
+                    Mockito.times(1)
+            ).saveCustomer(Mockito.any(Customer.class));
         }
     }
 }

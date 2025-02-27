@@ -1,42 +1,35 @@
 package com.alvarengacarlos.order.www;
 
-import java.security.SecureRandom;
-import java.util.HexFormat;
-
 public class CustomerService {
 
     private final CustomerRepository customerRepository;
+    private final CustomerPreRegisterRepository customerPreRegisterRepository;
 
-    public CustomerService(CustomerRepository customerRepository) {
+    public CustomerService(CustomerRepository customerRepository, CustomerPreRegisterRepository customerPreRegisterRepository) {
         this.customerRepository = customerRepository;
+        this.customerPreRegisterRepository = customerPreRegisterRepository;
     }
 
     public void preRegisterCustomer(String phoneNumber) {
-        String validationCode = generateValidationCode();
+        CustomerPreRegister customerPreRegister = CustomerPreRegister.newCustomerPreRegister(phoneNumber);
         //TODO: these two operations can be parallel
-        customerRepository.saveCustomerPreRegister(phoneNumber, validationCode);
-        customerRepository.sendSmsToCustomer(phoneNumber, "...");
-    }
-
-    private String generateValidationCode() {
-        SecureRandom secureRandom = new SecureRandom();
-        byte[] buffer = new byte[3];
-        secureRandom.nextBytes(buffer);
-        return HexFormat.of().formatHex(buffer);
+        customerPreRegisterRepository.saveCustomerPreRegister(customerPreRegister);
+        customerPreRegisterRepository.sendSmsToCustomer(phoneNumber, "...");
     }
 
     public void registerCustomer(
-        String phoneNumber,
-        String validationCode,
-        String name
+            String phoneNumber,
+            String validationCode,
+            String name
     ) throws InvalidValidationCodeException {
-        String preRegister = customerRepository.findCustomerPreRegister(
-            phoneNumber
+        CustomerPreRegister customerPreRegister = customerPreRegisterRepository.findCustomerPreRegister(
+                phoneNumber
         );
-        if (preRegister == null || !preRegister.equals(validationCode)) {
+        if (customerPreRegister == null || !customerPreRegister.validationCode.equals(validationCode)) {
             throw new InvalidValidationCodeException();
         }
 
-        customerRepository.saveCustomerRegister(name, phoneNumber);
+        Customer customer = new Customer(name, phoneNumber);
+        customerRepository.saveCustomer(customer);
     }
 }

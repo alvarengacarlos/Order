@@ -22,7 +22,8 @@ public class EmployeeRepositoryImplTest {
 
     @BeforeAll
     static void beforeAll() {
-        Integer port = DynamoDbContainerSingleton.getInstance().getPort();
+        DynamoDbContainerSingleton dynamoDbContainerSingleton = DynamoDbContainerSingleton.getInstance();
+        Integer port = dynamoDbContainerSingleton.startContainer();
         dynamoDbHelper = new DynamoDbHelper(port);
         dynamoDbClient = dynamoDbHelper.getClient();
         dynamoDbHelper.createOrderTable();
