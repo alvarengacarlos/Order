@@ -1,6 +1,7 @@
 package com.alvarengacarlos.order.www;
 
 import java.util.Map;
+import java.util.UUID;
 
 import com.alvarengacarlos.www.control.RequestBuilder;
 import com.alvarengacarlos.www.control.ResponseBuilder;
@@ -27,11 +28,64 @@ public class EmployeeController {
                     .withStatusCode(201)
                     .withBody(gson.toJson(Map.of("message", "Success")))
                     .build();
-        } catch (EmployeeExistsException e) {
+        } catch (EmployeeExistsException exception) {
             return new ResponseBuilder()
                     .withHeaders(defaultHeaders)
                     .withStatusCode(400)
-                    .withBody(gson.toJson(Map.of("message", "Employee exists")))
+                    .withBody(gson.toJson(Map.of("message", exception.getMessage())))
+                    .build();
+        }
+    }
+
+    public ResponseBuilder.Response destroyEmployee(RequestBuilder.Request request) {
+        UUID employeeId = UUID.fromString(request.pathParameters.get("employeeId"));
+        //TODO: Add validation
+        employeeService.destroyEmployee(employeeId);
+        return new ResponseBuilder()
+                .withHeaders(defaultHeaders)
+                .withStatusCode(204)
+                .withBody(gson.toJson(Map.of("message", "Success")))
+                .build();
+    }
+
+    public ResponseBuilder.Response activateEmployee(RequestBuilder.Request request) {
+        UUID employeeId = UUID.fromString(request.pathParameters.get("employeeId"));
+        //TODO: Add validation
+        employeeService.activateEmployee(employeeId);
+        return new ResponseBuilder()
+                .withHeaders(defaultHeaders)
+                .withStatusCode(200)
+                .withBody(gson.toJson(Map.of("message", "Success")))
+                .build();
+    }
+
+    public ResponseBuilder.Response deactivateEmployee(RequestBuilder.Request request) {
+        UUID employeeId = UUID.fromString(request.pathParameters.get("employeeId"));
+        //TODO: Add validation
+        employeeService.deactivateEmployee(employeeId);
+        return new ResponseBuilder()
+                .withHeaders(defaultHeaders)
+                .withStatusCode(200)
+                .withBody(gson.toJson(Map.of("message", "Success")))
+                .build();
+    }
+
+    public ResponseBuilder.Response authenticateEmployee(RequestBuilder.Request request) {
+        try {
+            AuthenticateEmployeeDto authenticateEmployeeDto = gson.fromJson(request.body, AuthenticateEmployeeDto.class);
+            //TODO: Add validation
+            String token = employeeService.authenticateEmployee(authenticateEmployeeDto);
+            return new ResponseBuilder()
+                    .withHeaders(defaultHeaders)
+                    .withStatusCode(200)
+                    .withBody(gson.toJson(Map.of("bearerToken", token)))
+                    .build();
+
+        } catch (AuthenticationFailureException exception) {
+            return new ResponseBuilder()
+                    .withHeaders(defaultHeaders)
+                    .withStatusCode(400)
+                    .withBody(gson.toJson(Map.of("message", exception.getMessage())))
                     .build();
         }
     }

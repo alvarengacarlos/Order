@@ -50,9 +50,9 @@ public class EmployeeService {
         employeeRepository.updateIsActiveEmployeeAttribute(employeeId, false);
     }
 
-    public String authenticateEmployee(String username, String password)
+    public String authenticateEmployee(AuthenticateEmployeeDto authenticateEmployeeDto)
             throws AuthenticationFailureException {
-        Employee employee = employeeRepository.findEmployeeByUsername(username);
+        Employee employee = employeeRepository.findEmployeeByUsername(authenticateEmployeeDto.username);
 
         if (employee == null) {
             throw new AuthenticationFailureException();
@@ -62,7 +62,7 @@ public class EmployeeService {
             throw new AuthenticationFailureException();
         }
 
-        if (!employee.passwordHash.equals(Employee.hashPassword(password, employee.salt))) {
+        if (!employee.passwordHash.equals(Employee.hashPassword(authenticateEmployeeDto.password, employee.salt))) {
             throw new AuthenticationFailureException();
         }
 

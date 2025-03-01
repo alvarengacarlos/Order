@@ -76,4 +76,99 @@ public class EmployeeTest {
         }
     }
 
+    @Nested
+    class DestroyEmployee {
+
+        @Test
+        void shouldReturnNoContentHttpResponse() {
+            Employee employee = Employee.newEmployee(name, username, password, role);
+            employeeRepositoryImpl.saveEmployee(employee);
+            Map<String, String> pathParameters = new HashMap<>();
+            pathParameters.put("employeeId", employee.id.toString());
+            RequestBuilder.Request request = new RequestBuilder()
+                    .withPathParameters(pathParameters)
+                    .build();
+
+            ResponseBuilder.Response response = employeeController.destroyEmployee(request);
+
+            Assertions.assertEquals(204, response.statusCode);
+        }
+    }
+
+    @Nested
+    class ActivateEmployee {
+
+        @Test
+        void shouldReturnOkHttpResponse() {
+            Employee employee = Employee.newEmployee(name, username, password, role);
+            employeeRepositoryImpl.saveEmployee(employee);
+            Map<String, String> pathParameters = new HashMap<>();
+            pathParameters.put("employeeId", employee.id.toString());
+            RequestBuilder.Request request = new RequestBuilder()
+                    .withPathParameters(pathParameters)
+                    .build();
+
+            ResponseBuilder.Response response = employeeController.activateEmployee(request);
+
+            Assertions.assertEquals(200, response.statusCode);
+        }
+    }
+
+    @Nested
+    class DeactivateEmployee {
+
+        @Test
+        void shouldReturnOkHttpResponse() {
+            Employee employee = Employee.newEmployee(name, username, password, role);
+            employeeRepositoryImpl.saveEmployee(employee);
+            Map<String, String> pathParameters = new HashMap<>();
+            pathParameters.put("employeeId", employee.id.toString());
+            RequestBuilder.Request request = new RequestBuilder()
+                    .withPathParameters(pathParameters)
+                    .build();
+
+            ResponseBuilder.Response response = employeeController.deactivateEmployee(request);
+
+            Assertions.assertEquals(200, response.statusCode);
+        }
+    }
+
+    @Nested
+    class AuthenticateEmployee {
+
+        @Test
+        void shouldReturnBadRequestHttpResponse() {
+            Employee employee = Employee.newEmployee(name, username, password, role);
+            employeeRepositoryImpl.saveEmployee(employee);
+            Map<String, String> body = new HashMap<>();
+            body.put("username", username);
+            body.put("password", "1234");
+            RequestBuilder.Request request = new RequestBuilder()
+                    .withBody(gson.toJson(body))
+                    .build();
+
+            ResponseBuilder.Response response = employeeController.authenticateEmployee(request);
+
+            Assertions.assertEquals(400, response.statusCode);
+        }
+
+        @Test
+        void shouldReturnOkHttpResponse() {
+            Employee employee = Employee.newEmployee(name, username, password, role);
+            employeeRepositoryImpl.saveEmployee(employee);
+            Map<String, String> body = new HashMap<>();
+            body.put("username", username);
+            body.put("password", password);
+            RequestBuilder.Request request = new RequestBuilder()
+                    .withBody(gson.toJson(body))
+                    .build();
+
+            ResponseBuilder.Response response = employeeController.authenticateEmployee(request);
+
+            Assertions.assertEquals(200, response.statusCode);
+            Assertions.assertTrue(response.body.split(":")[0].contains("bearerToken"));
+            Assertions.assertFalse(response.body.split(":")[1].isEmpty());
+
+        }
+    }
 }

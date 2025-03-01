@@ -17,12 +17,6 @@ class EmployeeServiceTest {
     private final String employeeUsername = "JohnDoe";
     private final String employeePassword = "John@123";
     private final EmployeeRole employeeRole = EmployeeRole.COOK;
-    private final CreateEmployeeDto createEmployeeDto = new CreateEmployeeDto(
-            employeeName,
-            employeeUsername,
-            employeePassword,
-            employeeRole
-    );
     private final Employee employee = new Employee(
             employeeId,
             employeeName,
@@ -42,6 +36,13 @@ class EmployeeServiceTest {
 
     @Nested
     class CreateEmployee {
+
+        private final CreateEmployeeDto createEmployeeDto = new CreateEmployeeDto(
+                employeeName,
+                employeeUsername,
+                employeePassword,
+                employeeRole
+        );
 
         @Test
         void shouldThrowEmployeeExists() {
@@ -129,6 +130,11 @@ class EmployeeServiceTest {
     @Nested
     class AuthenticateEmployee {
 
+        private final AuthenticateEmployeeDto authenticateEmployeeDto = new AuthenticateEmployeeDto(
+                employeeUsername,
+                employeePassword
+        );
+
         @Nested
         class ShouldThrowAuthenticationFailureException {
 
@@ -140,11 +146,7 @@ class EmployeeServiceTest {
 
                 Assertions.assertThrows(
                         AuthenticationFailureException.class,
-                        ()
-                        -> employeeService.authenticateEmployee(
-                                employeeUsername,
-                                employeePassword
-                        )
+                        () -> employeeService.authenticateEmployee(authenticateEmployeeDto)
                 );
                 Mockito.verify(
                         employeeRepository,
@@ -169,11 +171,7 @@ class EmployeeServiceTest {
 
                 Assertions.assertThrows(
                         AuthenticationFailureException.class,
-                        ()
-                        -> employeeService.authenticateEmployee(
-                                employeeUsername,
-                                employeePassword
-                        )
+                        () -> employeeService.authenticateEmployee(authenticateEmployeeDto)
                 );
                 Mockito.verify(
                         employeeRepository,
@@ -189,11 +187,7 @@ class EmployeeServiceTest {
 
                 Assertions.assertThrows(
                         AuthenticationFailureException.class,
-                        ()
-                        -> employeeService.authenticateEmployee(
-                                employeeUsername,
-                                employeePassword
-                        )
+                        () -> employeeService.authenticateEmployee(authenticateEmployeeDto)
                 );
                 Mockito.verify(
                         employeeRepository,
@@ -209,10 +203,7 @@ class EmployeeServiceTest {
                     employeeRepository.findEmployeeByUsername(employeeUsername)
             ).thenReturn(employee);
 
-            String jwtToken = employeeService.authenticateEmployee(
-                    employeeUsername,
-                    employeePassword
-            );
+            String jwtToken = employeeService.authenticateEmployee(authenticateEmployeeDto);
 
             Mockito.verify(
                     employeeRepository,

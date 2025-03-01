@@ -9,11 +9,11 @@ import com.github.javafaker.Faker;
 
 import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
 
-public class CustomerPreRegisterRepositoryImplTest {
+public class CustomerPreRegistrationRepositoryImplTest {
 
     private static DynamoDbClient dynamoDbClient;
     private static DynamoDbHelper dynamoDbHelper;
-    private static CustomerPreRegisterRepositoryImpl customerPreRegisterRepositoryImpl;
+    private static CustomerPreRegistrationRepositoryImpl customerPreRegisterRepositoryImpl;
     private final Faker faker = new Faker();
     private final String phoneNumber = faker.phoneNumber().cellPhone();
 
@@ -24,7 +24,7 @@ public class CustomerPreRegisterRepositoryImplTest {
         dynamoDbHelper = new DynamoDbHelper(port);
         dynamoDbClient = dynamoDbHelper.getClient();
         dynamoDbHelper.createOrderTable();
-        customerPreRegisterRepositoryImpl = new CustomerPreRegisterRepositoryImpl(dynamoDbClient);
+        customerPreRegisterRepositoryImpl = new CustomerPreRegistrationRepositoryImpl(dynamoDbClient);
     }
 
     @Nested
@@ -32,10 +32,10 @@ public class CustomerPreRegisterRepositoryImplTest {
 
         @Test
         void shouldSaveACustomerPreRegister() {
-            CustomerPreRegister customerPreRegister = CustomerPreRegister.newCustomerPreRegister(phoneNumber);
+            CustomerPreRegistration customerPreRegister = CustomerPreRegistration.newCustomerPreRegister(phoneNumber);
 
-            Assertions.assertDoesNotThrow(() -> customerPreRegisterRepositoryImpl.saveCustomerPreRegister(customerPreRegister));
-            Assertions.assertEquals(customerPreRegister.toString(), customerPreRegisterRepositoryImpl.findCustomerPreRegister(phoneNumber).toString());
+            Assertions.assertDoesNotThrow(() -> customerPreRegisterRepositoryImpl.saveCustomerPreRegistration(customerPreRegister));
+            Assertions.assertEquals(customerPreRegister.toString(), customerPreRegisterRepositoryImpl.findCustomerPreRegistration(phoneNumber).toString());
         }
     }
 
@@ -53,19 +53,19 @@ public class CustomerPreRegisterRepositoryImplTest {
 
         @Test
         void shouldReturnNull() {
-            CustomerPreRegister foundCustomerPreRegister = customerPreRegisterRepositoryImpl.findCustomerPreRegister(phoneNumber);
+            CustomerPreRegistration foundCustomerPreRegister = customerPreRegisterRepositoryImpl.findCustomerPreRegistration(phoneNumber);
 
             Assertions.assertNull(foundCustomerPreRegister);
         }
 
         @Test
         void shouldFindACustomerPreRegister() {
-            CustomerPreRegister customerPreRegister = CustomerPreRegister.newCustomerPreRegister(phoneNumber);
-            customerPreRegisterRepositoryImpl.saveCustomerPreRegister(customerPreRegister);
+            CustomerPreRegistration customerPreRegistration = CustomerPreRegistration.newCustomerPreRegister(phoneNumber);
+            customerPreRegisterRepositoryImpl.saveCustomerPreRegistration(customerPreRegistration);
 
-            CustomerPreRegister foundCustomerPreRegister = customerPreRegisterRepositoryImpl.findCustomerPreRegister(phoneNumber);
+            CustomerPreRegistration foundCustomerPreRegistration = customerPreRegisterRepositoryImpl.findCustomerPreRegistration(phoneNumber);
 
-            Assertions.assertEquals(customerPreRegister.toString(), foundCustomerPreRegister.toString());
+            Assertions.assertEquals(customerPreRegistration.toString(), foundCustomerPreRegistration.toString());
         }
     }
 }
