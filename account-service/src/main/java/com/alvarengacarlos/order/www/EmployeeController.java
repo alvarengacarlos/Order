@@ -11,7 +11,7 @@ public class EmployeeController {
 
     private final EmployeeService employeeService;
     private final Gson gson;
-    private Map<String, String> defaultHeaders = Map.of("Content-Type", "application/json");
+    private final Map<String, String> defaultHeaders = Map.of("Content-Type", "application/json");
 
     public EmployeeController(EmployeeService employeeService, Gson gson) {
         this.employeeService = employeeService;

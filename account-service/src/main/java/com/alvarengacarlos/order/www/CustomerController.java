@@ -10,7 +10,7 @@ public class CustomerController {
 
     private final CustomerService customerService;
     private final Gson gson;
-    private Map<String, String> defaultHeaders = Map.of("Content-Type", "application/json");
+    private final Map<String, String> defaultHeaders = Map.of("Content-Type", "application/json");
 
     public CustomerController(CustomerService customerService, Gson gson) {
         this.customerService = customerService;
