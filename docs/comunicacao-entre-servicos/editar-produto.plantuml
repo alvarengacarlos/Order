@@ -1,0 +1,10 @@
+@startuml
+' Definições
+actor Consumidor
+rectangle "Api Gateway" as ApiGateway
+rectangle "Serviço de Produto" as ProdutoServico
+
+' Relação
+Consumidor --> ApiGateway : Editar produto
+ApiGateway --> ProdutoServico
+@enduml

@@ -1,0 +1,10 @@
+@startuml
+' Definições
+actor Consumidor
+rectangle "Api Gateway" as ApiGateway
+rectangle "Serviço de Conta" as ContaServico
+
+' Relação
+Consumidor --> ApiGateway : Validar número de telefone com código
+ApiGateway --> ContaServico
+@enduml

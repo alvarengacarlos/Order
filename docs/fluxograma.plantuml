@@ -1,0 +1,24 @@
+@startuml
+start 
+: Usuário administrador da plataforma cria um inquilino e um usuário adminstrador para o restaurante;
+: Usuário administrador do restaurante cria seus funcionários e produtos;
+: Consumidor faz cadastro, escolhe produtos, forma de pagamento, local de retirada e finaliza pedido;
+if (Atendente recebe o pedido e aceita ou nega?) then (Nega)
+    : Pedido é marcado como negado;
+    stop
+else (Aceita)
+    : Pedido é marcado como aceito;
+endif
+: Cozinheiro recebe pedido e marca como em preparo;
+: Cezinheiro marca pedido como pronto;
+if (Pedido é para retirar no local?) then (Sim)
+    : Atendente marca pedido como pago e depois como entregue;
+    : Consumidor retira produto;
+    stop
+else (Nao)
+    : Entregador recebe pedido e marca como em entrega;
+endif
+: Entregador marca pedido como pago e depois como entregue;
+: Consumidor recebe o pedido;
+stop
+@enduml

@@ -1,5 +1,7 @@
-proxy-function.zip
-sms-notification-function.zip
-.idea
-node_modules
-coverage
+# Draw.io
+*.drawio.bkp
+
+# Terraform
+.terraform
+*.tfstate
+*.tfstate.backup

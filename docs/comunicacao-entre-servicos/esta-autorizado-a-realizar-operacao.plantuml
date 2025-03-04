@@ -1,0 +1,8 @@
+@startuml
+' Definições
+actor Servico
+rectangle "Serviço de Autorização" as AutorizacaoServico
+
+' Relação
+Servico --> AutorizacaoServico : Esta autorizado a realizar a operação
+@enduml

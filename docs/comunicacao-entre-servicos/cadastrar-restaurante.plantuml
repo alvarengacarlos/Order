@@ -1,0 +1,10 @@
+@startuml
+' Definições
+actor Raiz
+rectangle "Api Gateway" as ApiGateway
+rectangle "Serviço de Inquilino" as InquilinoServico
+
+' Relação
+Raiz --> ApiGateway : Cadastrar restaurante
+ApiGateway --> InquilinoServico
+@enduml

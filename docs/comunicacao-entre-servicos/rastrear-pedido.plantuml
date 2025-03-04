@@ -1,0 +1,10 @@
+@startuml
+' Definições
+actor Consumidor
+rectangle "Api Gateway" as ApiGateway
+rectangle "Serviço de Pedido" as PedidoServico
+
+' Relação
+Consumidor --> ApiGateway : Rastrear pedido
+ApiGateway --> PedidoServico
+@enduml

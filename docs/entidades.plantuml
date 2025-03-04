@@ -1,0 +1,170 @@
+@startuml
+' Definições
+package "InquilinoSubdominio" {
+    class Restaurante
+    Restaurante : nome
+    Restaurante : cnpj
+    Restaurante : Dono dono
+    Restaurante : acessoEstaBloqueado
+    Restaurante : Assinatura assinatura
+    Restaurante : cadastrarRestaurante()
+    Restaurante : listarRestaurantes()
+    Restaurante : bloquearAcesso()
+    Restaurante : liberarAcesso()
+
+    class Dono
+    Dono : nome
+    Dono : telefone
+
+    class Assinatura
+    Assinatura : valor
+    Assinatura : criarAssinatura()
+    Assinatura : assinaturaEstaPaga()
+
+    class PagamentoDaAssinatura
+    PagamentoDaAssinatura : data
+    PagamentoDaAssinatura : FormaDePagamento formaDePagamento
+    PagamentoDaAssinatura : identificadorDoPagamento
+    PagamentoDaAssinatura : criarPagamento()
+
+    class EnderecoRestaurante
+    EnderecoRestaurante : cidade
+    EnderecoRestaurante : bairro
+    EnderecoRestaurante : rua
+    EnderecoRestaurante : numero
+    EnderecoRestaurante : referencia
+
+    enum FormaDePagamentoRestaurante
+    FormaDePagamentoRestaurante : CARTAO_CREDITO
+    FormaDePagamentoRestaurante : CARTAO_DEBITO
+    FormaDePagamentoRestaurante : PIX
+    FormaDePagamentoRestaurante : DINHEIRO
+}
+
+package "ContaSubdominio" {
+    class Funcionario
+    Funcionario : nome
+    Funcionario : usuario
+    Funcionario : senha
+    Funcionario : Papel papel
+    Funcionario : funcionarioEstaAtivado
+    Funcionario : cadastrarFuncionario()
+    Funcionario : removerFuncionario()
+    Funcionario : editarFuncionario()
+    Funcionario : alterarSenhaDoFuncionario()
+    Funcionario : ativarFuncionario()
+    Funcionario : desativarFuncionario()
+
+    class Consumidor
+    Consumidor : nome
+    Consumidor : telefone
+    Consumidor : numeroDeTelefoneEstaValidado()
+    Consumidor : cadastrarMe()
+    Consumidor : validaNumeroDeTelefone()
+    Consumidor : alterarNumeroTelefone()
+    Consumidor : alterarNome()
+
+    class EnderecoDeEntrega
+    EnderecoDeEntrega : cidade
+    EnderecoDeEntrega : bairro
+    EnderecoDeEntrega : rua
+    EnderecoDeEntrega : numero
+    EnderecoDeEntrega : referencia
+
+    enum Papel
+    Papel : RAIZ
+    Papel : CHEFE
+    Papel : ATENDENTE
+    Papel : COZINHEIRO
+    Papel : ENTREGADOR    
+}
+
+package "ProdutoSubdominio" {
+    class Produto
+    Produto : nome
+    Produto : decricao
+    Produto : preco
+    Produto : cadastrarProduto()
+    Produto : removerProduto()
+    Produto : editarProduto()
+    Produto : listarProdutos()
+    Produto : pesquisarProduto()
+}
+
+package "CarrinhoDeCompras" {
+    class Carrinho
+    Carrinho : Produto[] produtos
+    Carrinho : totalAPagar
+    Carrinho : adicionarProduto()
+    Carrinho : removerProduto()
+}
+
+package "PedidoSubdominio" {
+    class Pedido
+    Pedido : Produto[] produtos
+    Pedido : totalAPagar
+    Pedido : FormaDePagamento formaDePagamento
+    Pedido : EstadoDoPedido estado
+    Pedido : Endereco endereco
+    Pedido : HistoricoDoEstadoDoPedido[] historico
+    Pedido : rastrearPedido()
+    Pedido : fazerPedido()
+    Pedido : listarPedido()
+    Pedido : mudarEstado()
+    
+    enum FormaDePagamentoConsumidor
+    FormaDePagamentoConsumidor : CARTAO_CREDITO
+    FormaDePagamentoConsumidor : CARTAO_DEBITO
+    FormaDePagamentoConsumidor : PIX
+    FormaDePagamentoConsumidor : DINHEIRO
+
+    enum EstadoDoPedido
+    EstadoDoPedido : PENDENTE
+    EstadoDoPedido : ACEITO
+    EstadoDoPedido : NEGADO
+    EstadoDoPedido : EM_PREPARO
+    EstadoDoPedido : PREPARADO
+    EstadoDoPedido : EM_ENTREGA
+    EstadoDoPedido : PAGO
+    EstadoDoPedido : ENTREGUE
+
+    class HistoricoDoEstadoDoPedido
+    HistoricoDoEstadoDoPedido : EstadoDoPedido estado
+    HistoricoDoEstadoDoPedido : criadoEm
+
+}
+
+package "NotificacaoSubdominio" {
+    class NotificacaoSms
+    NotificacaoSms : numeroDeTelefone
+    NotificacaoSms : mensagem
+    NotificacaoSms : enviarMensagem()
+}
+
+package "AutorizacaoSubdominio" {
+    class Autorizacao
+    AutorizacaoSubdominio : estaAutorizadoAFazerAOperacao()
+}
+
+' Relação
+Restaurante *-- EnderecoRestaurante
+Restaurante *-- Assinatura
+Restaurante *-- Dono
+Restaurante *-- Produto
+Restaurante *-- PagamentoDaAssinatura
+Restaurante *-- Funcionario
+Restaurante *-- Consumidor
+Funcionario *-- Papel
+Consumidor *-- Pedido
+Consumidor *-- Carrinho
+Consumidor *-- EnderecoDeEntrega
+Consumidor *-- Papel
+Pedido *-- FormaDePagamentoConsumidor
+Pedido o-- Produto
+Pedido *-- HistoricoDoEstadoDoPedido
+Pedido *-- EstadoDoPedido
+PagamentoDaAssinatura *-- FormaDePagamentoRestaurante
+HistoricoDoEstadoDoPedido *-- EstadoDoPedido
+Carrinho o-- Produto
+Consumidor o-- NotificacaoSms
+@enduml
