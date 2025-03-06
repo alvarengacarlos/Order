@@ -1,3 +1,13 @@
+# Gradle
+.gradle
+build
+
+# Maven
+target
+
+# VS Code
+.vscode
+
 # Draw.io
 *.drawio.bkp
 
