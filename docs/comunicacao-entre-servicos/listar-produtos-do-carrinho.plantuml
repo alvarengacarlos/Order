@@ -5,6 +5,6 @@ rectangle "Api Gateway" as ApiGateway
 rectangle "Serviço de Carrinho" as CarrinhoServico
 
 ' Relação
-Consumidor --> ApiGateway : Remover produto do carrinho
+Consumidor --> ApiGateway : Listar produtos do carrinho
 ApiGateway --> CarrinhoServico
 @enduml
