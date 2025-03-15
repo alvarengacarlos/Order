@@ -64,13 +64,6 @@ package "ContaSubdominio" {
     Consumidor : alterarNumeroTelefone()
     Consumidor : alterarNome()
 
-    class EnderecoDeEntrega
-    EnderecoDeEntrega : cidade
-    EnderecoDeEntrega : bairro
-    EnderecoDeEntrega : rua
-    EnderecoDeEntrega : numero
-    EnderecoDeEntrega : referencia
-
     enum Papel
     Papel : RAIZ
     Papel : CHEFE
@@ -100,6 +93,13 @@ package "CarrinhoDeCompras" {
 }
 
 package "PedidoSubdominio" {
+    class EnderecoDeEntrega
+    EnderecoDeEntrega : cidade
+    EnderecoDeEntrega : bairro
+    EnderecoDeEntrega : rua
+    EnderecoDeEntrega : numero
+    EnderecoDeEntrega : referencia
+
     class Pedido
     Pedido : Produto[] produtos
     Pedido : totalAPagar
@@ -157,12 +157,12 @@ Restaurante *-- Consumidor
 Funcionario *-- Papel
 Consumidor *-- Pedido
 Consumidor *-- Carrinho
-Consumidor *-- EnderecoDeEntrega
 Consumidor *-- Papel
 Pedido *-- FormaDePagamentoConsumidor
 Pedido o-- Produto
 Pedido *-- HistoricoDoEstadoDoPedido
 Pedido *-- EstadoDoPedido
+Pedido *-- EnderecoDeEntrega
 PagamentoDaAssinatura *-- FormaDePagamentoRestaurante
 HistoricoDoEstadoDoPedido *-- EstadoDoPedido
 Carrinho o-- Produto
