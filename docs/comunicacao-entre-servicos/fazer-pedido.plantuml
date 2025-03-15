@@ -2,12 +2,15 @@
 ' Definições
 actor Consumidor
 rectangle "Api Gateway" as ApiGateway
+rectangle "Serviço de carrinho" as CarrinhoServico
 rectangle "Serviço de Pedido" as PedidoServico
 rectangle "Serviço de Produto" as ProdutoServico
 
+
 ' Relação
 Consumidor --> ApiGateway : Fazer pedido
-ApiGateway --> PedidoServico
+ApiGateway --> CarrinhoServico
+CarrinhoServico --> PedidoServico
 PedidoServico --> ProdutoServico : Produto existe?
 ProdutoServico --> PedidoServico
 @enduml
